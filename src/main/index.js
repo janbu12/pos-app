@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { db, initDatabase } from './database'
+import { generateProductID } from './services'
 
 
 
@@ -47,8 +48,12 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
   initDatabase()
 
+  const columns = db.prepare('PRAGMA table_info(products)').all()
+  console.log(columns)
+
   const products = db.prepare('SELECT * FROM products').all()
   console.log('Products: ', products)
+
   const users = db.prepare('SELECT * FROM users').all()
   console.log('Users:', users)
 
@@ -66,11 +71,18 @@ app.whenReady().then(() => {
     return db.prepare('SELECT * FROM products').all()
   })
 
-  ipcMain.handle('add-products', (event, product) => {
+  ipcMain.handle('add-product', (event, product) => {
+    const newId = generateProductID()
     const stmt = db.prepare(
-      'INSERT INTO products (name, price, quantity, description ) VALUES (?, ?, ? ,?)'
+      `INSERT INTO products (id, name, price, quantity, description ) VALUES ('${newId}', ?, ?, ? ,?)`
     )
-    const info = stmt.run(product.name)
+    const info = stmt.run(
+      product.name,
+      product.price,
+      product.quantity,
+      product,
+      product.description
+    )
     return info
   })
 

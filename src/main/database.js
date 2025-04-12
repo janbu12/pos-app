@@ -11,18 +11,7 @@ function initDatabase() {
   db.prepare(
     `
     CREATE TABLE IF NOT EXISTS products (
-      id INTEGER PRIMARY KEY,
-      name TEXT NOT NULL,
-      price DOUBLE NOT NULL,
-      quantity INTEGER NOT NULL,
-      description TEXT
-    )
-  `
-  ).run()
-  db.prepare(
-    `
-    CREATE TABLE IF NOT EXISTS products (
-      id TEXT PRIMARY KEY,
+      id TEXT NOT NULL,
       name TEXT NOT NULL,
       price DOUBLE NOT NULL,
       quantity INTEGER NOT NULL,
