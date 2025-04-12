@@ -4,6 +4,8 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { db, initDatabase } from './database'
 import { generateProductID } from './services'
+import { addUser, getAllUsers } from './controller/userController'
+import { addProduct, getAllProducts } from './controller/productController'
 
 
 
@@ -57,34 +59,11 @@ app.whenReady().then(() => {
   const users = db.prepare('SELECT * FROM users').all()
   console.log('Users:', users)
 
-  ipcMain.handle('get-users', () => {
-    return db.prepare('SELECT * FROM users').all()
-  })
+  ipcMain.handle('get-users', () => getAllUsers())
+  ipcMain.handle('add-user', (event, user) => addUser(user))
 
-  ipcMain.handle('add-user', (event, user) => {
-    const stmt = db.prepare('INSERT INTO users (name) VALUES (?)')
-    const info = stmt.run(user.name)
-    return info
-  })
-
-  ipcMain.handle('get-products', () => {
-    return db.prepare('SELECT * FROM products').all()
-  })
-
-  ipcMain.handle('add-product', (event, product) => {
-    const newId = generateProductID()
-    const stmt = db.prepare(
-      `INSERT INTO products (id, name, price, quantity, description ) VALUES ('${newId}', ?, ?, ? ,?)`
-    )
-    const info = stmt.run(
-      product.name,
-      product.price,
-      product.quantity,
-      product,
-      product.description
-    )
-    return info
-  })
+  ipcMain.handle('get-products', () => getAllProducts())
+  ipcMain.handle('add-product', (event, product) => addProduct(product))
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
