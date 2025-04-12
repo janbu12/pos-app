@@ -31,30 +31,24 @@ const Sidebar = () => {
         <h3>{page}</h3>
       </div>
       <ul className="sidebar-menu">
-        <li className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>
-          <Link to="/" className="menu-link">
+        <Link to="/" className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>
             <span className="menu-icon">🏠</span>
             <span className="menu-label">Home</span>
-          </Link>
-        </li>
-        <li className={location.pathname === '/analytics' ? 'menu-item active' : 'menu-item'}>
-          <Link to="/analytics" className="menu-link">
-            <span className="menu-icon">📊</span>
-            <span className="menu-label">Analytics</span>
-          </Link>
-        </li>
-        <li className={location.pathname === '/products' ? 'menu-item active' : 'menu-item'}>
-          <Link to="/products" className="menu-link">
-            <span className="menu-icon">💼</span>
-            <span className="menu-label">Products</span>
-          </Link>
-        </li>
-        <li className={location.pathname === '/profile' ? 'menu-item active' : 'menu-item'}>
-          <Link to="/profile" className="menu-link">
-            <span className="menu-icon">👤</span>
-            <span className="menu-label">Profile</span>
-          </Link>
-        </li>
+        </Link>
+        <Link
+          to="/products"
+          className={location.pathname === '/products' ? 'menu-item active' : 'menu-item'}
+        >
+          <span className="menu-icon">💼</span>
+          <span className="menu-label">Products</span>
+        </Link>
+        <Link
+          to="/analytics"
+          className={location.pathname === '/analytics' ? 'menu-item active' : 'menu-item'}
+        >
+          <span className="menu-icon">📊</span>
+          <span className="menu-label">Analytics</span>
+        </Link>
       </ul>
     </div>
   );
