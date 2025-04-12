@@ -20,6 +20,9 @@ const Sidebar = () => {
       case '/products':
         setPage('Products')
         break
+      case '/product/add':
+        setPage('Products')
+        break
       default:
         setPage('NotFound')
     }

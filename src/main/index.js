@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/logo.ico?asset'
 import { db, initDatabase } from './database'
 import { addUser, getAllUsers } from './controller/userController'
-import { addProduct, getAllProducts } from './controller/productController'
+import { addProduct, deleteProduct, getAllProducts, updateProduct } from './controller/productController'
 
 
 
@@ -61,8 +61,11 @@ app.whenReady().then(() => {
   ipcMain.handle('get-users', () => getAllUsers())
   ipcMain.handle('add-user', (event, user) => addUser(user))
 
+  //Product
   ipcMain.handle('get-products', () => getAllProducts())
   ipcMain.handle('add-product', (event, product) => addProduct(product))
+  ipcMain.handle('delete-product', (_event, id) => deleteProduct(id))
+  ipcMain.handle('update-product', (product) => updateProduct(product))
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
