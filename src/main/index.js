@@ -2,16 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import path from 'path'
-import Database from 'better-sqlite3'
+import { db, initDatabase } from './database'
 
-let db
 
-function initDatabase() {
-  const dbPath = path.join(app.getPath('userData'), 'app.db')
-  db = new Database(dbPath)
-  db.prepare('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)').run()
-}
 
 function createWindow() {
   // Create the browser window.
@@ -54,15 +47,32 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
   initDatabase()
 
+  const products = db.prepare('SELECT * FROM products').all()
+  console.log('Products: ', products)
+  const users = db.prepare('SELECT * FROM users').all()
+  console.log('Users:', users)
+
   ipcMain.handle('get-users', () => {
     return db.prepare('SELECT * FROM users').all()
   })
 
   ipcMain.handle('add-user', (event, user) => {
-    const stmt = db.prepare('INSERT INTO users (name) VALUES (?)');
-    const info = stmt.run(user.name);
-    return info;
-  });
+    const stmt = db.prepare('INSERT INTO users (name) VALUES (?)')
+    const info = stmt.run(user.name)
+    return info
+  })
+
+  ipcMain.handle('get-products', () => {
+    return db.prepare('SELECT * FROM products').all()
+  })
+
+  ipcMain.handle('add-products', (event, product) => {
+    const stmt = db.prepare(
+      'INSERT INTO products (name, price, quantity, description ) VALUES (?, ?, ? ,?)'
+    )
+    const info = stmt.run(product.name)
+    return info
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

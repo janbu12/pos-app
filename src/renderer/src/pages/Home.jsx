@@ -9,15 +9,16 @@ function Home() {
   }, []);
 
   const handleAddUser = async () => {
-    const user = { name: 'John Doe'};
-    window.api.addUser(user).then(() => {
-      window.api.getData().then(setUsers);
-    });
-  };
+    const user = { name: 'John Doe'}
+    await window.api.addUser(user)
+    const newUsers = await window.api.getUsers()
+    setUsers(newUsers)
+  }
   return (
     <>
       <h2>Home</h2>
       <Link to={'/about'}>About</Link>
+      <Link to={'/products'}>Products</Link>
       <h1>User List</h1>
       <button onClick={handleAddUser}>Add User</button>
       <ul>
