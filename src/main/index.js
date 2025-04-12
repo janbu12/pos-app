@@ -1,9 +1,8 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
+import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/logo.ico?asset'
 import { db, initDatabase } from './database'
-import { generateProductID } from './services'
 import { addUser, getAllUsers } from './controller/userController'
 import { addProduct, getAllProducts } from './controller/productController'
 
@@ -16,7 +15,7 @@ function createWindow() {
     height: 670,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
