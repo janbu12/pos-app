@@ -1,0 +1,23 @@
+import { db } from '../database.js'
+
+function generateProductID() {
+  const lastRow = db.prepare('SELECT id FROM products ORDER BY id DESC LIMIT 1').get()
+  const lastNumber = lastRow ? parseInt(lastRow.id.slice(3)) : 0
+  const nextNumber = lastNumber + 1
+  return `PRD${String(nextNumber).padStart(4, '0')}`
+}
+
+function getAllProducts() {
+  return db.prepare('SELECT * FROM products').all()
+}
+
+function addProduct(product) {
+  const newId = generateProductID()
+  const stmt = db.prepare(`
+    INSERT INTO products (id, name, price, quantity, description)
+    VALUES (?, ?, ?, ?, ?)
+  `)
+  return stmt.run(newId, product.name, product.price, product.quantity, product.description)
+}
+
+export { getAllProducts, addProduct }
