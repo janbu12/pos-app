@@ -11,6 +11,10 @@ function getAllProducts() {
   return db.prepare('SELECT * FROM products').all()
 }
 
+function getProductById(id) {
+  return db.prepare('SELECT * FROM products WHERE id = ?').get(id)
+}
+
 function addProduct(product) {
   const newId = generateProductID()
   const stmt = db.prepare(`
@@ -20,13 +24,13 @@ function addProduct(product) {
   return stmt.run(newId, product.name, product.price, product.quantity, product.description)
 }
 
-function updateProduct(product) {
+function updateProduct(id, product) {
   const stmt = db.prepare(`
     UPDATE products
     SET name = ?, price = ?, quantity = ?, description = ?
     WHERE id = ?
     `)
-  return stmt.run(product.name, product.price, product.quantity, product.description, product.id)
+  return stmt.run(product.name, product.price, product.quantity, product.description, id)
 }
 
 function deleteProduct(id) {
@@ -35,4 +39,4 @@ function deleteProduct(id) {
   return stmt.run(id)
 }
 
-export { getAllProducts, addProduct, updateProduct, deleteProduct }
+export { getAllProducts, addProduct, updateProduct, deleteProduct, getProductById }

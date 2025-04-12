@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/logo.ico?asset'
 import { db, initDatabase } from './database'
 import { addUser, getAllUsers } from './controller/userController'
-import { addProduct, deleteProduct, getAllProducts, updateProduct } from './controller/productController'
+import { addProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from './controller/productController'
 
 
 
@@ -63,9 +63,18 @@ app.whenReady().then(() => {
 
   //Product
   ipcMain.handle('get-products', () => getAllProducts())
+  ipcMain.handle('get-product-by-id', (_event, id) => getProductById(id))
   ipcMain.handle('add-product', (event, product) => addProduct(product))
   ipcMain.handle('delete-product', (_event, id) => deleteProduct(id))
-  ipcMain.handle('update-product', (product) => updateProduct(product))
+  ipcMain.handle('update-product', async (event, id, product) => {
+    try {
+      const result = updateProduct(id, product)
+      return { success: true, data: result }
+    } catch (error) {
+      console.error('Error updating product:', error)
+      return { success: false, error: error.message }
+    }
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

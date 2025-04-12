@@ -6,6 +6,7 @@ const Home = React.lazy(() => import('./pages/Home'))
 const About = React.lazy(() => import('./pages/About'))
 const Products = React.lazy(() => import('./pages/Products'))
 const AddProduct = React.lazy(() => import('./pages/AddProduct'))
+const EditProduct = React.lazy(() => import('./pages/EditProduct'))
 const NotFound = React.lazy(() => import('./pages/NotFound'))
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/add" element={<AddProduct />} />
+              <Route path="/product/edit/:id" element={<EditProduct />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
