@@ -1,70 +1,97 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import '../styles/EditProduct.css' // gunakan style yang sama dengan EditProduct
 
 function AddProduct() {
   const navigate = useNavigate()
 
-  const [product, setProduct] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     quantity: ''
   })
 
-  // Handle perubahan input
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target
-    setProduct((prevProduct) => ({
-      ...prevProduct,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value
     }))
   }
 
-  // Kirim data produk ke main process melalui IPC
-  const handleAddProduct = async () => {
-    if (product.name && product.description && product.price && product.quantity) {
-      await window.api.addProduct(product)
-      alert('Product added successfully!')
-      navigate('/products')
-    } else {
-      alert('Please fill all the fields!')
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const { name, description, price, quantity } = formData
+
+    if (!name || !description || !price || !quantity) {
+      alert('Please fill all fields.')
+      return
+    }
+
+    try {
+      const result = await window.api.addProduct(formData)
+      if (result?.success === false) {
+        alert('Failed to add product: ' + result.error)
+      } else {
+        alert('Product added successfully!')
+        navigate('/products')
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err)
+      alert('Something went wrong while adding the product.')
     }
   }
 
   return (
-    <div>
+    <div className="edit-product-container">
       <h2>Add Product</h2>
-      <input
-        type="text"
-        name="name"
-        placeholder="Product Name"
-        value={product.name}
-        onChange={handleInputChange}
-      />
-      <input
-        type="text"
-        name="description"
-        placeholder="Product Description"
-        value={product.description}
-        onChange={handleInputChange}
-      />
-      <input
-        type="number"
-        name="price"
-        placeholder="Price"
-        value={product.price}
-        onChange={handleInputChange}
-      />
-      <input
-        type="number"
-        name="quantity"
-        placeholder="Quantity"
-        value={product.quantity}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleAddProduct}>Add Product</button>
+      <form onSubmit={handleSubmit} className="edit-form">
+        <label>
+          Name:
+          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+        </label>
+        <label>
+          Description:
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Price:
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Quantity:
+          <input
+            type="number"
+            name="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <div className="buttons">
+          <button type="submit" className="btn update">
+            Add
+          </button>
+          <button type="button" onClick={() => navigate('/products')} className="btn cancel">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
-  );
+  )
 }
 
 export default AddProduct
