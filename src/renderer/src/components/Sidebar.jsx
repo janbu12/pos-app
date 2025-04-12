@@ -10,20 +10,20 @@ const Sidebar = () => {
   const [page, setPage] = useState('Home')
 
   useEffect(() => {
-    switch (path) {
-      case '/':
-        setPage('Home')
-        break
-      case '/about':
-        setPage('About')
-        break
-      case '/products':
-        setPage('Products')
-        break
-      default:
-        setPage('NotFound')
+    if (path === '/') {
+      setPage('Home')
+    } else if (path === '/about') {
+      setPage('About')
+    } else if (path === '/products') {
+      setPage('Products')
+    } else if (path.startsWith('/product/edit/')) {
+      setPage('Edit Product')
+    } else if (path === '/product/add') {
+      setPage('Add Product')
+    } else {
+      setPage('NotFound')
     }
-  }, [setPage, path])
+  }, [path])
 
   return (
     <div className="sidebar">
@@ -32,12 +32,16 @@ const Sidebar = () => {
       </div>
       <ul className="sidebar-menu">
         <Link to="/" className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>
-            <span className="menu-icon">🏠</span>
-            <span className="menu-label">Home</span>
+          <span className="menu-icon">🏠</span>
+          <span className="menu-label">Home</span>
         </Link>
         <Link
           to="/products"
-          className={location.pathname === '/products' ? 'menu-item active' : 'menu-item'}
+          className={
+            location.pathname.startsWith('/product') || location.pathname === '/products'
+              ? 'menu-item active'
+              : 'menu-item'
+          }
         >
           <span className="menu-icon">💼</span>
           <span className="menu-label">Products</span>
