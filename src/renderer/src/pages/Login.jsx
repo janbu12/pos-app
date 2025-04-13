@@ -28,6 +28,11 @@ function Login({ onLoginSuccess }) {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleLogin()
+            }
+          }}
           className="login-input"
         />
         <button onClick={toggleShowPassword} className="toggle-password-button">
