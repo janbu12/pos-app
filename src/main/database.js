@@ -33,6 +33,25 @@ function initDatabase() {
     db.prepare('INSERT INTO auth (password) VALUES (?)').run('1234')
     console.log('Password default "1234" berhasil ditambahkan ke database.')
   }
+
+  db.prepare(
+    `CREATE TABLE IF NOT EXISTS transactions (
+      id TEXT NOT NULL,
+      date TEXT,
+      total REAL
+    );`
+  ).run()
+
+  db.prepare(
+    `CREATE TABLE IF NOT EXISTS detail_transaction (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      transaction_id TEXT,
+      product_id TEXT,
+      quantity INTEGER,
+      price REAL,
+      FOREIGN KEY (transaction_id) REFERENCES transactions(id)
+    );`
+  ).run()
 }
 
 export { initDatabase, db }
