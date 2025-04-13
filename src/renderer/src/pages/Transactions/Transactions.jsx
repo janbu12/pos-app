@@ -12,6 +12,7 @@ function Transactions() {
   const fetchTransactions = async () => {
     const result = await window.api.getAllTransactions()
     setTransactions(result)
+    console.log(transactions)
   }
 
   return (

@@ -30,8 +30,10 @@ const Sidebar = () => {
       setPage('Detail Transaction')
     } else if (path === '/transaction/add') {
       setPage('Add Transaction')
+    } else if (path.startsWith('/transaction')) {
+      setPage('Detail Transaction')
     } else {
-      setPage('NotFound')
+      setPage('Development Stage')
     }
   }, [path])
 
