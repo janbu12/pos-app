@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Home() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
-    window.api.getUsers().then(setUsers);
-  }, []);
+    window.api.getUsers().then(setUsers)
+  }, [])
 
   const handleAddUser = async () => {
     const user = { name: 'John Doe'}
