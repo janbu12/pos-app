@@ -4,15 +4,20 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/logo.ico?asset'
 import { db, initDatabase } from './database'
 import { addUser, checkPassword, getAllUsers, updatePassword } from './controller/userController'
-import { addProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from './controller/productController'
-
-
+import {
+  addProduct,
+  deleteProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct
+} from './controller/productController'
 
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
+    fullscreen: true,
     show: false,
     autoHideMenuBar: true,
     icon,
