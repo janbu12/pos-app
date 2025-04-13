@@ -7,6 +7,7 @@ let db
 function initDatabase() {
   const dbPath = path.join(app.getPath('userData'), 'app.db')
   db = new Database(dbPath)
+  db.pragma('foreign_keys = ON')
   db.prepare('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)').run()
   db.prepare(
     `
@@ -36,7 +37,7 @@ function initDatabase() {
 
   db.prepare(
     `CREATE TABLE IF NOT EXISTS transactions (
-      id TEXT NOT NULL,
+      id TEXT PRIMARY KEY,
       date TEXT,
       total REAL
     );`
@@ -52,6 +53,9 @@ function initDatabase() {
       FOREIGN KEY (transaction_id) REFERENCES transactions(id)
     );`
   ).run()
+
+  // db.prepare(`DROP TABLE transactions`).run()
+  // db.prepare(`DROP TABLE detail_transaction`).run()
 }
 
 export { initDatabase, db }

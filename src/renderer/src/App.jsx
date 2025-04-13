@@ -11,6 +11,9 @@ const EditProduct = React.lazy(() => import('./pages/Products/EditProduct'))
 const NotFound = React.lazy(() => import('./pages/NotFound'))
 const Login = React.lazy(() => import('./pages/Login'))
 const Setting = React.lazy(() => import('./pages/Setting/Setting'))
+const Transactions = React.lazy(() => import('./pages/Transactions/Transactions'))
+const Transaction = React.lazy(() => import('./pages/Transactions/Transaction'))
+const AddTransaction = React.lazy(() => import('./pages/Transactions/AddTransaction'))
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -31,6 +34,9 @@ function App() {
               <Route path="/products" element={<Products />} />
               <Route path="/product/add" element={<AddProduct />} />
               <Route path="/product/edit/:id" element={<EditProduct />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/transaction/:id" element={<Transaction />} />
+              <Route path="/transaction/add" element={<AddTransaction />} />
               <Route path="/setting" element={<Setting />} />
               <Route path="/setting/password" element={<PasswordSetting />} />
               <Route path="*" element={<NotFound />} />
