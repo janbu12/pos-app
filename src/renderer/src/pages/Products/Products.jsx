@@ -64,9 +64,6 @@ function Products() {
                   <button onClick={() => handleUpdate(product.id)} className="btn edit">
                     Edit
                   </button>
-                  <button onClick={() => handleDelete(product.id)} className="btn delete">
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))
