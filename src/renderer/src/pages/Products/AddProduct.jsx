@@ -1,48 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import '../styles/EditProduct.css'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import '../../styles/EditProduct.css'
 
-function EditProduct() {
-  const { id } = useParams()
+function AddProduct() {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState({ name: '', price: '', quantity: 0, description: '' })
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const data = await window.api.getProductById(id)
-      setFormData({
-        name: data.name,
-        price: data.price,
-        quantity: data.quantity,
-        description: data.description
-      })
-    }
-    fetchProduct()
-  }, [id])
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    price: '',
+    quantity: ''
+  })
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    const { name, description, price, quantity } = formData
+
+    if (!name || !description || !price || !quantity) {
+      alert('Please fill all fields.')
+      return
+    }
+
     try {
-      const response = await window.api.updateProduct(id, formData)
-      if (response.success) {
-        alert('Berhasil update!!')
-        navigate('/products')
+      const result = await window.api.addProduct(formData)
+      if (result?.success === false) {
+        alert('Failed to add product: ' + result.error)
       } else {
-        alert('Gagal update: ' + response.error)
+        alert('Product added successfully!')
+        navigate('/products')
       }
     } catch (err) {
       console.error('Unexpected error:', err)
-      alert('Terjadi error saat mengupdate produk.')
+      alert('Something went wrong while adding the product.')
     }
   }
 
   return (
     <div className="edit-product-container">
-      <h2>Edit Product</h2>
+      <h2>Add Product</h2>
       <form onSubmit={handleSubmit} className="edit-form">
         <label>
           Name:
@@ -80,7 +83,7 @@ function EditProduct() {
         </label>
         <div className="buttons">
           <button type="submit" className="btn update">
-            Update
+            Add
           </button>
           <button type="button" onClick={() => navigate('/products')} className="btn cancel">
             Cancel
@@ -91,4 +94,4 @@ function EditProduct() {
   )
 }
 
-export default EditProduct
+export default AddProduct

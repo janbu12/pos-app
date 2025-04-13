@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../styles/Products.css'
+import '../../styles/Products.css'
 
 function Products() {
   const [products, setProducts] = useState([])
@@ -42,6 +42,7 @@ function Products() {
             <th>#</th>
             <th>Name</th>
             <th>Price</th>
+            <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -58,9 +59,10 @@ function Products() {
                 <td>{index + 1}</td>
                 <td>{product.name}</td>
                 <td>Rp {product.price}</td>
+                <td>{product.description}</td>
                 <td>
                   <button onClick={() => handleUpdate(product.id)} className="btn edit">
-                    Update
+                    Edit
                   </button>
                   <button onClick={() => handleDelete(product.id)} className="btn delete">
                     Delete

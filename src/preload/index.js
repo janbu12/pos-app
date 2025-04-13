@@ -9,7 +9,10 @@ const api = {
   getProductById: (id) => ipcRenderer.invoke('get-product-by-id', id),
   addProduct: (product) => ipcRenderer.invoke('add-product', product),
   deleteProduct: (id) => ipcRenderer.invoke('delete-product', id),
-  updateProduct: (id, product) => ipcRenderer.invoke('update-product', id, product)
+  updateProduct: (id, product) => ipcRenderer.invoke('update-product', id, product),
+  checkPassword: (inputPassword) => ipcRenderer.invoke('check-password', inputPassword),
+  updatePassword: (newPassword) => ipcRenderer.invoke('update-password', newPassword),
+  exitApp: () => ipcRenderer.invoke('app-exit')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

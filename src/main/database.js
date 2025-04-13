@@ -19,6 +19,20 @@ function initDatabase() {
     )
   `
   ).run()
+  db.prepare(
+    `
+    CREATE TABLE IF NOT EXISTS auth (
+      id INTEGER PRIMARY KEY,
+      password TEXT NOT NULL
+    )
+  `
+  ).run()
+
+  const row = db.prepare('SELECT * FROM auth LIMIT 1').get()
+  if (!row) {
+    db.prepare('INSERT INTO auth (password) VALUES (?)').run('1234')
+    console.log('Password default "1234" berhasil ditambahkan ke database.')
+  }
 }
 
 export { initDatabase, db }

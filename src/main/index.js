@@ -3,7 +3,7 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/logo.ico?asset'
 import { db, initDatabase } from './database'
-import { addUser, getAllUsers } from './controller/userController'
+import { addUser, checkPassword, getAllUsers, updatePassword } from './controller/userController'
 import { addProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from './controller/productController'
 
 
@@ -58,6 +58,9 @@ app.whenReady().then(() => {
   const users = db.prepare('SELECT * FROM users').all()
   console.log('Users:', users)
 
+  const auth = db.prepare('SELECT * FROM auth').all()
+  console.log('Auth:', auth)
+
   ipcMain.handle('get-users', () => getAllUsers())
   ipcMain.handle('add-user', (event, user) => addUser(user))
 
@@ -66,6 +69,8 @@ app.whenReady().then(() => {
   ipcMain.handle('get-product-by-id', (_event, id) => getProductById(id))
   ipcMain.handle('add-product', (event, product) => addProduct(product))
   ipcMain.handle('delete-product', (_event, id) => deleteProduct(id))
+  ipcMain.handle('check-password', (event, inputPassword) => checkPassword(inputPassword))
+  ipcMain.handle('update-password', (event, newPassword) => updatePassword(newPassword))
   ipcMain.handle('update-product', async (event, id, product) => {
     try {
       const result = updateProduct(id, product)
@@ -74,6 +79,10 @@ app.whenReady().then(() => {
       console.error('Error updating product:', error)
       return { success: false, error: error.message }
     }
+  })
+
+  ipcMain.handle('app-exit', () => {
+    app.quit()
   })
 
   // Default open or close DevTools by F12 in development
