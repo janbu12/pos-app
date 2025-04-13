@@ -1,51 +1,48 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '../styles/EditProduct.css' // gunakan style yang sama dengan EditProduct
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import '../../styles/EditProduct.css'
 
-function AddProduct() {
+function EditProduct() {
+  const { id } = useParams()
   const navigate = useNavigate()
+  const [formData, setFormData] = useState({ name: '', price: '', quantity: 0, description: '' })
 
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    quantity: ''
-  })
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const data = await window.api.getProductById(id)
+      setFormData({
+        name: data.name,
+        price: data.price,
+        quantity: data.quantity,
+        description: data.description
+      })
+    }
+    fetchProduct()
+  }, [id])
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { name, description, price, quantity } = formData
-
-    if (!name || !description || !price || !quantity) {
-      alert('Please fill all fields.')
-      return
-    }
-
     try {
-      const result = await window.api.addProduct(formData)
-      if (result?.success === false) {
-        alert('Failed to add product: ' + result.error)
-      } else {
-        alert('Product added successfully!')
+      const response = await window.api.updateProduct(id, formData)
+      if (response.success) {
+        alert('Berhasil update!!')
         navigate('/products')
+      } else {
+        alert('Gagal update: ' + response.error)
       }
     } catch (err) {
       console.error('Unexpected error:', err)
-      alert('Something went wrong while adding the product.')
+      alert('Terjadi error saat mengupdate produk.')
     }
   }
 
   return (
     <div className="edit-product-container">
-      <h2>Add Product</h2>
+      <h2>Edit Product</h2>
       <form onSubmit={handleSubmit} className="edit-form">
         <label>
           Name:
@@ -83,7 +80,7 @@ function AddProduct() {
         </label>
         <div className="buttons">
           <button type="submit" className="btn update">
-            Add
+            Update
           </button>
           <button type="button" onClick={() => navigate('/products')} className="btn cancel">
             Cancel
@@ -94,4 +91,4 @@ function AddProduct() {
   )
 }
 
-export default AddProduct
+export default EditProduct

@@ -81,3 +81,21 @@
 .menu-link:hover {
   text-decoration: none;
 }
+
+.exit-button {
+  background: none;
+  margin: 20px;
+  border: none;
+  color: white;
+  /* padding: 15px 20px; */
+  margin-top: auto;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #2a2a40;
+}
+
+.exit-button:hover {
+  background-color: #2a2a40;
+}

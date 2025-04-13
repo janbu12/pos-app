@@ -9,4 +9,15 @@ function addUser(user) {
   return stmt.run(user.name)
 }
 
-export { getAllUsers, addUser }
+function checkPassword(inputPassword) {
+  const result = db.prepare('SELECT password FROM auth WHERE id = 1').get()
+  if (!result) return false
+  return inputPassword === result.password
+}
+
+function updatePassword(newPassword) {
+  const stmt = db.prepare('UPDATE auth SET password = ? WHERE id = 1')
+  return stmt.run(newPassword)
+}
+
+export { getAllUsers, addUser, checkPassword, updatePassword }

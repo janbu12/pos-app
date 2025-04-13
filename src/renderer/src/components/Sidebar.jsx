@@ -20,6 +20,10 @@ const Sidebar = () => {
       setPage('Edit Product')
     } else if (path === '/product/add') {
       setPage('Add Product')
+    } else if (path === '/setting') {
+      setPage('Setting')
+    } else if (path === '/setting/password') {
+      setPage('Setting Password')
     } else {
       setPage('NotFound')
     }
@@ -53,9 +57,20 @@ const Sidebar = () => {
           <span className="menu-icon">📊</span>
           <span className="menu-label">Analytics</span>
         </Link>
+        <Link
+          to="/setting"
+          className={location.pathname === '/setting' ? 'menu-item active' : 'menu-item'}
+        >
+          <span className="menu-icon">⚙️</span>
+          <span className="menu-label">Setting</span>
+        </Link>
       </ul>
+      <button className="menu-item exit-button" onClick={() => window.api.exitApp()}>
+        <span className="menu-icon">❌</span>
+        <span className="menu-label">Exit</span>
+      </button>
     </div>
-  );
-};
+  )
+}
 
 export default Sidebar
