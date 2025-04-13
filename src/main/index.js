@@ -11,6 +11,11 @@ import {
   getProductById,
   updateProduct
 } from './controller/productController'
+import {
+  addTransaction,
+  getAllTransactions,
+  getTransactionById
+} from './controller/transactionController'
 
 function createWindow() {
   // Create the browser window.
@@ -66,6 +71,12 @@ app.whenReady().then(() => {
   const auth = db.prepare('SELECT * FROM auth').all()
   console.log('Auth:', auth)
 
+  const transactions = db.prepare('SELECT * FROM transactions').all()
+  console.log('Transaction:', transactions)
+
+  const detail_transaction = db.prepare('SELECT * FROM detail_transaction').all()
+  console.log('Detail_transaction:', detail_transaction)
+
   ipcMain.handle('get-users', () => getAllUsers())
   ipcMain.handle('add-user', (event, user) => addUser(user))
 
@@ -90,6 +101,11 @@ app.whenReady().then(() => {
     app.quit()
   })
 
+  ipcMain.handle('add-transaction', (event, transaction, details) =>
+    addTransaction(transaction, details)
+  )
+  ipcMain.handle('get-all-transactions', () => getAllTransactions())
+  ipcMain.handle('get-transaction-by-id', async (event, id) => getTransactionById(id))
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils

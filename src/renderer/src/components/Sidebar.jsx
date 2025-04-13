@@ -24,8 +24,16 @@ const Sidebar = () => {
       setPage('Setting')
     } else if (path === '/setting/password') {
       setPage('Setting Password')
+    } else if (path === '/transactions') {
+      setPage('Transactions')
+    } else if (path === '/transaction') {
+      setPage('Detail Transaction')
+    } else if (path === '/transaction/add') {
+      setPage('Add Transaction')
+    } else if (path.startsWith('/transaction')) {
+      setPage('Detail Transaction')
     } else {
-      setPage('NotFound')
+      setPage('Development Stage')
     }
   }, [path])
 
@@ -56,6 +64,17 @@ const Sidebar = () => {
         >
           <span className="menu-icon">📊</span>
           <span className="menu-label">Analytics</span>
+        </Link>
+        <Link
+          to="/transactions"
+          className={
+            location.pathname.startsWith('/transaction') || location.pathname === '/transactions'
+              ? 'menu-item active'
+              : 'menu-item'
+          }
+        >
+          <span className="menu-icon">📑</span>
+          <span className="menu-label">Transactions</span>
         </Link>
         <Link
           to="/setting"
