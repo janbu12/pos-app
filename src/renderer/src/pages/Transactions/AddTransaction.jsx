@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../../styles/AddTransaction.css'
+import Alert from '../../components/Alert'
 
 function AddTransaction() {
   const [transactionId, setTransactionId] = useState('')
@@ -9,6 +10,7 @@ function AddTransaction() {
   const [selectedItems, setSelectedItems] = useState([])
   const [total, setTotal] = useState(0)
   const navigate = useNavigate()
+  const [showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
     generateTransactionId()
@@ -69,7 +71,7 @@ function AddTransaction() {
 
     const result = await window.api.addTransaction(transaction, selectedItems)
     if (result.success) {
-      alert('Transaksi berhasil disimpan!')
+      setShowAlert(true)
       navigate('/transactions')
     } else {
       alert('Gagal menyimpan transaksi: ' + result.error)
@@ -136,6 +138,14 @@ function AddTransaction() {
           ← Kembali
         </Link>
       </div>
+      {showAlert && (
+        <Alert
+          type="success"
+          title="Transaction Created"
+          timer={1500}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
     </div>
   )
 }

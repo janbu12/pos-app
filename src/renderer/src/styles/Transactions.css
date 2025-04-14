@@ -1,7 +1,8 @@
 .transactions-container {
   width: 100%;
-  margin: 40px auto;
-  padding: 2rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 40px 2rem;
   font-family: Arial, sans-serif;
 }
 

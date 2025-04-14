@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import '../../styles/EditProduct.css'
+import Alert from '../../components/Alert'
 
 function EditProduct() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({ name: '', price: '', quantity: 0, description: '' })
+  const [showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -29,7 +31,7 @@ function EditProduct() {
     try {
       const response = await window.api.updateProduct(id, formData)
       if (response.success) {
-        alert('Berhasil update!!')
+        setShowAlert(true)
         navigate('/products')
       } else {
         alert('Gagal update: ' + response.error)
@@ -87,6 +89,14 @@ function EditProduct() {
           </button>
         </div>
       </form>
+      {showAlert && (
+        <Alert
+          type="success"
+          title="Edit Product Success"
+          timer={1500}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
     </div>
   )
 }

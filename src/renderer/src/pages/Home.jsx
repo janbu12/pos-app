@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts'
 import '../styles/Home.css'
 
 function Home() {
@@ -8,6 +9,12 @@ function Home() {
   const [totalTransactions, setTotalTransactions] = useState(0)
   const [topProducts, setTopProducts] = useState([])
   const [topProductsThisMonth, setTopProductsThisMonth] = useState([])
+
+  const data = [
+    { date: '2025-04-10', value: 20 },
+    { date: '2025-04-11', value: 45 },
+    { date: '2025-04-12', value: 30 },
+  ];
 
   useEffect(() => {
     // Simulasi data
@@ -116,6 +123,32 @@ function Home() {
           ))}
         </tbody>
       </table>
+
+      <h2 className="section-title">Contoh Grafik</h2>
+      <div className="stats-grid">
+        <div className="card">
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data}>
+              <CartesianGrid stroke="#ccc" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="card">
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data}>
+              <CartesianGrid stroke="#ccc" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   )
 }

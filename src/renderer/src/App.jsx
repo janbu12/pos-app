@@ -2,6 +2,7 @@ import React, { Suspense, useState } from 'react'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import PasswordSetting from './pages/Setting/PasswordSetting'
+import Loading from './components/Loading'
 
 const Home = React.lazy(() => import('./pages/Home'))
 const About = React.lazy(() => import('./pages/About'))
@@ -24,7 +25,7 @@ function App() {
 
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <div className="app-container">
           <Sidebar />
           <div className="main-content">
