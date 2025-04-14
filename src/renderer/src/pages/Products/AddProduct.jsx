@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/EditProduct.css'
+import Alert from '../../components/Alert'
 
 function AddProduct() {
   const navigate = useNavigate()
+  const [showAlert, setShowAlert] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -34,7 +36,7 @@ function AddProduct() {
       if (result?.success === false) {
         alert('Failed to add product: ' + result.error)
       } else {
-        alert('Product added successfully!')
+        setShowAlert(true)
         navigate('/products')
       }
     } catch (err) {
@@ -90,6 +92,15 @@ function AddProduct() {
           </button>
         </div>
       </form>
+
+      {showAlert && (
+        <Alert
+          type="success"
+          title="Product Created"
+          timer={1500}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
     </div>
   )
 }

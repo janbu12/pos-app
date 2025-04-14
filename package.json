@@ -20,7 +20,11 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
-    "better-sqlite3": "^11.9.1"
+    "better-sqlite3": "^11.9.1",
+    "lucide-react": "^0.488.0",
+    "recharts": "^2.15.2",
+    "sweetalert2": "^11.17.2",
+    "sweetalert2-react-content": "^5.1.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^2.0.0",
